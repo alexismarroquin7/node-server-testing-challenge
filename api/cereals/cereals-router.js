@@ -14,8 +14,13 @@ router.get('/:cereal_id', (req, res, next) => {
   res.end()
 });
 
-router.post('/', (req, res, next) => {
-  res.end()
+router.post('/', async (req, res, next) => {
+  try {
+    const newCereal = await Cereal.create(req.body);
+    res.status(201).json(newCereal);
+  } catch(err) {
+    next(err);
+  }
 });
 
 router.delete('/:cereal_id', (req, res, next) => {
