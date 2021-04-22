@@ -43,7 +43,18 @@ describe('server.js', () => {
       expect(res.body[1]).toMatchObject({ cereal_id: 2, ...frostedFlakes });
     });
   });
-  // describe('[POST] /cereals', () => {
-    
-  // });
+  describe('[POST] /cereals', () => {
+    it('responds with proper status code 201', async () => {
+      const res = await request(server).post('/cereals').send(luckyCharms);
+      expect(res.status).toEqual(201);
+    });  
+    it('returns newly created cereal in correct format', async () => {
+      let res;
+      res = await request(server).post('/cereals').send(luckyCharms);
+      expect(res.body).toMatchObject({ cereal_id: 1, ...luckyCharms });
+  
+      res = await request(server).post('/cereals').send(frostedFlakes);
+      expect(res.body).toMatchObject({ cereal_id: 2, ...frostedFlakes });
+    });  
+  });
 });
