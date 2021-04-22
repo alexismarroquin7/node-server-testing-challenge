@@ -43,7 +43,7 @@ describe('server.js', () => {
       expect(res.body[1]).toMatchObject({ cereal_id: 2, ...frostedFlakes });
     });
   });
-  describe('[POST] /cereals', () => {
+  describe('[POST] /api/cereals', () => {
     it('responds with proper status code 201', async () => {
       const res = await request(server).post('/cereals').send(luckyCharms);
       expect(res.status).toEqual(201);
@@ -56,5 +56,27 @@ describe('server.js', () => {
       res = await request(server).post('/cereals').send(frostedFlakes);
       expect(res.body).toMatchObject({ cereal_id: 2, ...frostedFlakes });
     });  
+  });
+  describe('[DELETE] /api/cereals', () => {
+
+    beforeEach(async () => {
+      await db('cereals').insert(luckyCharms);
+      await db('cereals').insert(frostedFlakes);
+    });
+
+    it('responds with proper status code 200', async () => {
+      const res = await request(server).delete('/cereals/1');
+      expect(res.status).toEqual(200);
+    });
+
+    it('returns the deleted object in correct format', async () => {
+      let res;
+      res = await request(server).delete('/cereals/1');
+      expect(res.body).toMatchObject({ cereal_id: 1, ...luckyCharms });
+      
+      res = await request(server).delete('/cereals/2');
+      expect(res.body).toMatchObject({ cereal_id: 2, ...frostedFlakes });
+    });
+    
   });
 });
