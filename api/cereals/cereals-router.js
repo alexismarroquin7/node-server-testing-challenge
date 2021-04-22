@@ -23,8 +23,13 @@ router.post('/', async (req, res, next) => {
   }
 });
 
-router.delete('/:cereal_id', (req, res, next) => {
-  res.end()
+router.delete('/:cereal_id', async (req, res, next) => {
+  try {
+    const deletedCereal = await Cereal.remove(req.params.cereal_id);
+    res.status(200).json(deletedCereal);
+  } catch(err) {
+    next(err);
+  }
 });
 
 router.use((err, req, res, next) => { // eslint-disable-line
