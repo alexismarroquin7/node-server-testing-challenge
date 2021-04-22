@@ -10,8 +10,13 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-router.get('/:cereal_id', (req, res, next) => {
-  res.end()
+router.get('/:cereal_id', async (req, res, next) => {
+  try {
+    const cereal = await Cereal.findById(req.params.cereal_id);
+    res.status(200).json(cereal);
+  } catch(err) {
+    next(err);
+  }
 });
 
 router.post('/', async (req, res, next) => {

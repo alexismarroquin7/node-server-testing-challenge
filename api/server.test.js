@@ -47,6 +47,17 @@ describe('server.js', () => {
       expect(res.body[7]).toMatchObject({ cereal_id: 8, ...frostedFlakes });
     });
   });
+  describe('[GET] /api/cereals/:cereal_id', () => {
+    it('returns proper status code 200', async () => {
+      const res = await request(server).get('/api/cereals/1');
+      expect(res.status).toEqual(200);
+    });
+    it('returns cereal with given id', async () => {
+      await db('cereals').insert(cornFlakes);
+      const res = await request(server).get('/api/cereals/7');
+      expect(res.body).toMatchObject({ cereal_id: 7, ...cornFlakes });
+    });
+  });
   describe('[POST] /api/cereals', () => {
     it('responds with proper status code 201', async () => {
       const res = await request(server).post('/api/cereals').send(cornFlakes);
