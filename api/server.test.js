@@ -57,7 +57,7 @@ describe('server.js', () => {
       expect(res.body).toMatchObject({ cereal_id: 2, ...frostedFlakes });
     });  
   });
-  describe('[DELETE] /api/cereals', () => {
+  describe('[DELETE] /api/cereals/:cereal_id', () => {
 
     beforeEach(async () => {
       await db('cereals').insert(luckyCharms);
@@ -77,6 +77,6 @@ describe('server.js', () => {
       res = await request(server).delete('/cereals/2');
       expect(res.body).toMatchObject({ cereal_id: 2, ...frostedFlakes });
     });
-    
+
   });
 });
